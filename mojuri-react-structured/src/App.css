@@ -1,0 +1,459 @@
+/* File riêng để bạn thêm CSS React nếu cần.
+   CSS gốc của template vẫn nằm trong public/assets/css/app.css và responsive.css. */
+.react-hidden {
+  display: none;
+}
+
+.auth-page .box-form-login {
+  border: 1px solid #e7e7e7;
+  padding: 30px;
+}
+
+.auth-form {
+  display: grid;
+  gap: 16px;
+}
+
+.auth-form label {
+  color: #000;
+  display: grid;
+  gap: 8px;
+}
+
+.auth-form .input-text {
+  border: 1px solid #d8d8d8;
+  height: 44px;
+  padding: 0 12px;
+}
+
+.auth-form .button {
+  background: #000;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  height: 44px;
+  padding: 0 24px;
+}
+
+.auth-form .button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.auth-message {
+  color: #8a4b2f;
+  margin-top: 18px;
+}
+
+.auth-status,
+.site-auth-status .section-container {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.auth-status {
+  border: 1px solid #d8d8d8;
+  margin-bottom: 22px;
+  padding: 14px 18px;
+}
+
+.auth-status span,
+.site-auth-status span {
+  text-transform: lowercase;
+}
+
+.auth-status-active,
+.site-auth-status-active {
+  background: #f0f8f3;
+  color: #1f6f3a;
+}
+
+.auth-status-inactive,
+.site-auth-status-inactive {
+  background: #faf2ef;
+  color: #8a4b2f;
+}
+
+.site-auth-status {
+  border-bottom: 1px solid #e7e7e7;
+  font-size: 14px;
+  padding: 10px 0;
+}
+
+.site-auth-status button,
+.site-auth-status a {
+  background: #000;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  min-height: 34px;
+  padding: 0 14px;
+  align-items: center;
+  text-decoration: none;
+}
+
+.admin-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  background: #f5f5f5;
+  color: #1f1f1f;
+  font-family: Arial, sans-serif;
+}
+
+.admin-sidebar {
+  background: #111;
+  color: #fff;
+  padding: 28px 22px;
+}
+
+.admin-brand {
+  color: #fff;
+  display: inline-block;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 34px;
+  text-decoration: none;
+}
+
+.admin-nav {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-nav a {
+  color: #d8d8d8;
+  padding: 10px 12px;
+  text-decoration: none;
+}
+
+.admin-nav a:hover,
+.admin-nav button.active {
+  background: #222;
+  color: #fff;
+}
+
+.admin-nav button {
+  background: transparent;
+  text-align: left;
+  text-transform: capitalize;
+}
+
+.admin-main {
+  padding: 32px;
+}
+
+.admin-topbar {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.admin-kicker {
+  color: #777;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+}
+
+.admin-topbar h1,
+.admin-panel h2 {
+  margin: 0;
+}
+
+.admin-user {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.admin-panel,
+.admin-stats article {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+}
+
+.admin-panel {
+  padding: 22px;
+}
+
+.admin-login {
+  display: grid;
+  gap: 14px;
+  max-width: 420px;
+}
+
+.admin-login label,
+.admin-product-form {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-login input,
+.admin-product-form input {
+  border: 1px solid #d6d6d6;
+  height: 42px;
+  padding: 0 12px;
+}
+
+.admin-shell button {
+  background: #111;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  height: 40px;
+  padding: 0 16px;
+}
+
+.admin-shell button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.admin-stats {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 18px;
+}
+
+.admin-stats article {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+}
+
+.admin-stats span {
+  color: #777;
+}
+
+.admin-stats strong {
+  font-size: 28px;
+}
+
+.admin-product-form {
+  grid-template-columns: 1.5fr 1fr 120px 120px auto;
+  margin-bottom: 18px;
+}
+
+.admin-product-form h2,
+.admin-form-grid h2 {
+  grid-column: 1 / -1;
+}
+
+.admin-form-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 18px;
+}
+
+.admin-form-grid input,
+.admin-form-grid select,
+.admin-form-grid textarea,
+.dynamic-form input,
+.dynamic-form textarea,
+.checkout-form input,
+.checkout-form textarea,
+.order-lookup input,
+.shop-filters input,
+.shop-filters select {
+  border: 1px solid #d6d6d6;
+  min-height: 42px;
+  padding: 0 12px;
+}
+
+.admin-form-grid textarea {
+  grid-column: span 2;
+  min-height: 92px;
+  padding-top: 10px;
+}
+
+.admin-checkbox {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.admin-message {
+  color: #8a4b2f;
+  margin: 0 0 18px;
+}
+
+.admin-table-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.admin-table th,
+.admin-table td {
+  border-bottom: 1px solid #ededed;
+  padding: 13px 10px;
+  text-align: left;
+}
+
+.admin-table th {
+  color: #666;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    padding: 18px;
+  }
+
+  .admin-main {
+    padding: 20px;
+  }
+
+  .admin-topbar,
+  .admin-user {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-stats,
+  .admin-product-form,
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.shop-dynamic {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 240px 1fr;
+}
+
+.shop-filters,
+.dynamic-form,
+.checkout-form,
+.order-lookup {
+  display: grid;
+  gap: 12px;
+}
+
+.shop-view-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.shop-view-toggle button.active {
+  background: #000;
+  color: #fff;
+}
+
+.dynamic-card {
+  height: 100%;
+  margin-bottom: 28px;
+}
+
+.dynamic-card img,
+.dynamic-gallery img,
+.related-card img,
+.recent-posts-widget img {
+  height: auto;
+  width: 100%;
+}
+
+.dynamic-card button,
+.dynamic-pagination button,
+.product-info button,
+.checkout-dynamic button,
+.dynamic-form button {
+  background: #000;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  min-height: 40px;
+  padding: 0 16px;
+}
+
+.dynamic-meta {
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.dynamic-pagination {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.product-dynamic,
+.dynamic-section {
+  margin-top: 34px;
+}
+
+.dynamic-gallery {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.related-card {
+  color: #000;
+  display: grid;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.checkout-dynamic {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 1.3fr 0.7fr;
+}
+
+.order-lookup {
+  grid-column: 1 / -1;
+}
+
+.blog-detail-layout {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: 1fr 280px;
+}
+
+.recent-posts-widget {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.recent-posts-widget a {
+  color: #000;
+  display: grid;
+  gap: 8px;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .shop-dynamic,
+  .checkout-dynamic,
+  .blog-detail-layout {
+    grid-template-columns: 1fr;
+  }
+}

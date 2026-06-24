@@ -1,0 +1,19 @@
+{
+  "name": "mojuri-fullstack-workspace",
+  "private": true,
+  "workspaces": [
+    "backend-api",
+    "mojuri-react-structured"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace backend-api\" \"npm run dev --workspace mojuri-react-structured\"",
+    "dev:backend": "npm run dev --workspace backend-api",
+    "dev:backend:mock": "npm run dev:mock --workspace backend-api",
+    "dev:frontend": "npm run dev --workspace mojuri-react-structured",
+    "dev:mock": "concurrently \"npm run dev:mock --workspace backend-api\" \"npm run dev --workspace mojuri-react-structured\"",
+    "build": "npm run build --workspace backend-api && npm run build --workspace mojuri-react-structured"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

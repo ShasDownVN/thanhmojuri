@@ -1,0 +1,4 @@
+/* Reset nhỏ cho Vite + React. Phần giao diện chính lấy từ CSS gốc Mojuri. */
+#root {
+  min-height: 100vh;
+}
