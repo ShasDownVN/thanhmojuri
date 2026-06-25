@@ -288,7 +288,7 @@ const headerHtml = `
 <a href="/account"><span class="menu-item-text">My Account</span></a>
 </li>
 <li>
-<a href="/admin"><span class="menu-item-text">Admin Dashboard</span></a>
+<a href="/admin"><span class="menu-item-text">Trang quản trị admin</span></a>
 </li>
 <li>
 <a href="/about"><span class="menu-item-text">About Us</span></a>
@@ -306,9 +306,6 @@ const headerHtml = `
 </li>
 <li class="level-0 menu-item">
 <a href="/contact"><span class="menu-item-text">Contact</span></a>
-</li>
-<li class="level-0 menu-item">
-<a href="/admin"><span class="menu-item-text">Admin</span></a>
 </li>
 </ul>
 </nav>

@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../services/api'
 import { DEMO_ADMIN_TOKEN, demoAdminUser, isDemoAdminLogin } from '../services/demoAuth'
 import { useAuthStore } from '../stores/authStore'
@@ -103,13 +103,18 @@ export default function Login() {
                 <span>{sessionStatus === 'active' ? 'đang hoạt động' : 'ngưng hoạt động'}</span>
               </div>
             )}
+            <div className="auth-admin-actions">
+              <Link className="button auth-admin-link" to="/admin">
+                Trang quản trị admin
+              </Link>
+            </div>
             <div className="row">
               <div className="col-lg-6 col-md-6 col-sm-12 sm-m-b-50">
                 <div className="box-form-login">
-                  <h2>Login</h2>
+                  <h2>Đăng nhập</h2>
                   <form className="auth-form" onSubmit={handleLoginWithDemoFallback}>
                     <label>
-                      Email address <span className="required">*</span>
+                      Địa chỉ email <span className="required">*</span>
                       <input
                         className="input-text"
                         required
@@ -119,7 +124,7 @@ export default function Login() {
                       />
                     </label>
                     <label>
-                      Password <span className="required">*</span>
+                      Mật khẩu <span className="required">*</span>
                       <input
                         className="input-text"
                         required
@@ -131,14 +136,14 @@ export default function Login() {
                     <div className="rememberme-lost">
                       <div className="remember-me">
                         <input type="checkbox" />
-                        <label className="inline">Remember me</label>
+                        <label className="inline">Nhớ tôi</label>
                       </div>
                       <div className="lost-password">
-                        <a href="/forgot-password">Lost your password?</a>
+                        <a href="/forgot-password">Mất mật khẩu?</a>
                       </div>
                     </div>
                     <button className="button" disabled={loading} type="submit">
-                      Login
+                      Đăng nhập
                     </button>
                   </form>
                 </div>
@@ -146,10 +151,10 @@ export default function Login() {
 
               <div className="col-lg-6 col-md-6 col-sm-12">
                 <div className="box-form-login">
-                  <h2 className="register">Register</h2>
+                  <h2 className="register">Đăng ký</h2>
                   <form className="auth-form" onSubmit={handleRegister}>
                     <label>
-                      Full name <span className="required">*</span>
+                      Họ và tên <span className="required">*</span>
                       <input
                         className="input-text"
                         required
@@ -158,7 +163,7 @@ export default function Login() {
                       />
                     </label>
                     <label>
-                      Email address <span className="required">*</span>
+                      Địa chỉ email <span className="required">*</span>
                       <input
                         className="input-text"
                         required
@@ -168,7 +173,7 @@ export default function Login() {
                       />
                     </label>
                     <label>
-                      Password <span className="required">*</span>
+                      Mật khẩu <span className="required">*</span>
                       <input
                         className="input-text"
                         minLength={6}
@@ -179,7 +184,7 @@ export default function Login() {
                       />
                     </label>
                     <button className="button" disabled={loading} type="submit">
-                      Register
+                      Đăng ký
                     </button>
                   </form>
                 </div>
