@@ -1,0 +1,11 @@
+{
+  "installCommand": "npm install",
+  "buildCommand": "npm run build --workspace mojuri-react-structured",
+  "outputDirectory": "mojuri-react-structured/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
