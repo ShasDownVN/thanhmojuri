@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../services/api'
+import { DEMO_ADMIN_TOKEN, demoAdminUser, isDemoAdminLogin } from '../services/demoAuth'
 import { useAuthStore } from '../stores/authStore'
 
 export default function Login() {
@@ -34,6 +35,29 @@ export default function Login() {
       navigate(response.user.role === 'admin' ? '/admin' : '/account')
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Đăng nhập thất bại')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleLoginWithDemoFallback(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setLoading(true)
+    setMessage('')
+
+    try {
+      const response = await api.login(loginForm.email, loginForm.password)
+      setSession(response.token, response.user)
+      setMessage(`${response.user.name} is active.`)
+      navigate(response.user.role === 'admin' ? '/admin' : '/account')
+    } catch (error) {
+      if (isDemoAdminLogin(loginForm.email, loginForm.password)) {
+        setSession(DEMO_ADMIN_TOKEN, demoAdminUser)
+        setMessage('Mojuri Admin is active.')
+        navigate('/admin')
+        return
+      }
+      setMessage(error instanceof Error ? error.message : 'Login failed')
     } finally {
       setLoading(false)
     }
@@ -83,7 +107,7 @@ export default function Login() {
               <div className="col-lg-6 col-md-6 col-sm-12 sm-m-b-50">
                 <div className="box-form-login">
                   <h2>Login</h2>
-                  <form className="auth-form" onSubmit={handleLogin}>
+                  <form className="auth-form" onSubmit={handleLoginWithDemoFallback}>
                     <label>
                       Email address <span className="required">*</span>
                       <input

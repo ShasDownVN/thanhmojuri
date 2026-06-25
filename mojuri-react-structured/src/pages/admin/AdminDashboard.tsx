@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import { api, BlogPost, ContactMessage, Order, OrderStats, OrderStatus, Product } from '../../services/api'
+import { DEMO_ADMIN_TOKEN, demoAdminUser, isDemoAdminLogin, isDemoAdminToken } from '../../services/demoAuth'
 import { useAuthStore } from '../../stores/authStore'
 
 type Tab = 'products' | 'orders' | 'contacts' | 'blogs'
@@ -37,6 +38,110 @@ const orderStatsDefaults: OrderStats = {
   revenueByMonth: {},
 }
 
+const demoProducts: Product[] = [
+  {
+    id: 'p-001',
+    name: 'Diamond Halo Ring',
+    slug: 'diamond-halo-ring',
+    description: '<p>A delicate halo ring with a polished gold band.</p>',
+    price: 189,
+    salePrice: 169,
+    category: 'Rings',
+    stock: 24,
+    status: 'in-stock',
+    image: '/media/product/1.jpg',
+    gallery: ['/media/product/1.jpg', '/media/product/1-2.jpg', '/media/product/2.jpg'],
+    featured: true,
+    reviews: [],
+    createdAt: '2026-06-18T08:00:00.000Z',
+  },
+  {
+    id: 'p-002',
+    name: 'Pearl Drop Earrings',
+    slug: 'pearl-drop-earrings',
+    description: '<p>Freshwater pearl earrings with a slim gold hook.</p>',
+    price: 129,
+    category: 'Earrings',
+    stock: 18,
+    status: 'in-stock',
+    image: '/media/product/5.jpg',
+    gallery: ['/media/product/5.jpg', '/media/product/5-2.jpg'],
+    featured: true,
+    reviews: [],
+    createdAt: '2026-06-16T08:00:00.000Z',
+  },
+]
+
+const demoOrders: Order[] = [
+  {
+    id: 'ORD-1001',
+    customer: {
+      name: 'Mai Nguyen',
+      phone: '0901234567',
+      email: 'mai@example.com',
+      address: '12 Nguyen Hue, District 1, HCMC',
+    },
+    items: [
+      { productId: 'p-001', name: 'Diamond Halo Ring', price: 169, quantity: 1 },
+      { productId: 'p-002', name: 'Pearl Drop Earrings', price: 129, quantity: 2 },
+    ],
+    subtotal: 427,
+    shippingFee: 15,
+    total: 442,
+    status: 'pending',
+    createdAt: '2026-06-22T08:00:00.000Z',
+  },
+]
+
+const demoContacts: ContactMessage[] = [
+  {
+    id: 'c-001',
+    name: 'Linh Tran',
+    email: 'linh@example.com',
+    subject: 'Ring size support',
+    message: 'Can you help me choose the correct ring size?',
+    status: 'unread',
+    createdAt: '2026-06-21T08:00:00.000Z',
+  },
+]
+
+const demoBlogs: BlogPost[] = [
+  {
+    id: 'b-001',
+    title: 'How to Choose Everyday Jewelry',
+    slug: 'choose-everyday-jewelry',
+    category: 'Tips',
+    excerpt: 'Simple rules for pairing rings, earrings, and necklaces with daily outfits.',
+    content: '<p>Start with one hero piece, then keep the rest quiet.</p>',
+    coverImage: '/media/blog/1.jpg',
+    status: 'published',
+    publishedAt: '2026-06-10T08:00:00.000Z',
+  },
+]
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+}
+
+function readDemoList<T>(key: string, fallback: T[]) {
+  const raw = localStorage.getItem(key)
+  if (!raw) return fallback
+
+  try {
+    return JSON.parse(raw) as T[]
+  } catch {
+    localStorage.removeItem(key)
+    return fallback
+  }
+}
+
+function writeDemoList<T>(key: string, value: T[]) {
+  localStorage.setItem(key, JSON.stringify(value))
+}
+
 export default function AdminDashboard() {
   const token = useAuthStore((state) => state.token)
   const user = useAuthStore((state) => state.user)
@@ -56,6 +161,7 @@ export default function AdminDashboard() {
   const [editingProductId, setEditingProductId] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const demoMode = isDemoAdminToken(token)
 
   const stats = useMemo(
     () => ({
@@ -66,8 +172,36 @@ export default function AdminDashboard() {
     [contacts, products],
   )
 
+  function loadDemoData() {
+    const nextProducts = readDemoList<Product>('mojuri_demo_products', demoProducts)
+    const nextOrders = readDemoList<Order>('mojuri_demo_orders', demoOrders)
+    const nextContacts = readDemoList<ContactMessage>('mojuri_demo_contacts', demoContacts)
+    const nextBlogs = readDemoList<BlogPost>('mojuri_demo_blogs', demoBlogs)
+    const totalRevenue = nextOrders.reduce((sum, order) => sum + order.total, 0)
+
+    setCategories(['Rings', 'Necklaces', 'Earrings', 'Bracelets'])
+    setProducts(nextProducts)
+    setOrders(nextOrders)
+    setOrderStats({
+      ...orderStatsDefaults,
+      totalRevenue,
+      totalOrders: nextOrders.length,
+      pendingOrders: nextOrders.filter((order) => order.status === 'pending').length,
+      todayRevenue: totalRevenue,
+      monthRevenue: totalRevenue,
+    })
+    setContacts(nextContacts)
+    setBlogs(nextBlogs)
+  }
+
   async function loadAll(activeToken = token) {
     if (!activeToken) return
+
+    if (isDemoAdminToken(activeToken)) {
+      loadDemoData()
+      return
+    }
+
     setLoading(true)
     setMessage('')
     try {
@@ -104,6 +238,12 @@ export default function AdminDashboard() {
       setSession(response.token, response.user)
       await loadAll(response.token)
     } catch (error) {
+      if (isDemoAdminLogin(email, password)) {
+        setSession(DEMO_ADMIN_TOKEN, demoAdminUser)
+        loadDemoData()
+        setMessage('Demo admin mode is active.')
+        return
+      }
       setMessage(error instanceof Error ? error.message : 'Login failed')
     } finally {
       setLoading(false)
@@ -125,6 +265,26 @@ export default function AdminDashboard() {
       featured: productForm.featured,
     }
     try {
+      if (demoMode) {
+        const product: Product = {
+          id: editingProductId || `p-${Date.now()}`,
+          slug: slugify(payload.name),
+          reviews: [],
+          createdAt: new Date().toISOString(),
+          ...payload,
+        }
+        const nextProducts = editingProductId
+          ? products.map((item) => (item.id === editingProductId ? { ...item, ...product } : item))
+          : [product, ...products]
+
+        setProducts(nextProducts)
+        writeDemoList('mojuri_demo_products', nextProducts)
+        setProductForm(productFormDefaults)
+        setEditingProductId('')
+        setMessage('Demo product saved locally.')
+        return
+      }
+
       if (editingProductId) {
         await api.updateProduct(token, editingProductId, payload)
       } else {
@@ -142,6 +302,21 @@ export default function AdminDashboard() {
   async function saveBlog(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     try {
+      if (demoMode) {
+        const blog: BlogPost = {
+          id: `b-${Date.now()}`,
+          slug: slugify(blogForm.title),
+          publishedAt: new Date().toISOString(),
+          ...blogForm,
+        }
+        const nextBlogs = [blog, ...blogs]
+        setBlogs(nextBlogs)
+        writeDemoList('mojuri_demo_blogs', nextBlogs)
+        setBlogForm(blogFormDefaults)
+        setMessage('Demo blog post created locally.')
+        return
+      }
+
       await api.createBlog(token, blogForm)
       setBlogForm(blogFormDefaults)
       await loadAll()
@@ -166,6 +341,43 @@ export default function AdminDashboard() {
       featured: product.featured,
     })
     setTab('products')
+  }
+
+  async function deleteProduct(productId: string) {
+    if (demoMode) {
+      const nextProducts = products.filter((product) => product.id !== productId)
+      setProducts(nextProducts)
+      writeDemoList('mojuri_demo_products', nextProducts)
+      setMessage('Demo product deleted locally.')
+      return
+    }
+
+    await api.deleteProduct(token, productId)
+    await loadAll()
+  }
+
+  async function updateOrderStatus(orderId: string, status: OrderStatus) {
+    if (demoMode) {
+      const nextOrders = orders.map((order) => (order.id === orderId ? { ...order, status } : order))
+      setOrders(nextOrders)
+      writeDemoList('mojuri_demo_orders', nextOrders)
+      return
+    }
+
+    await api.updateOrderStatus(token, orderId, status)
+    await loadAll()
+  }
+
+  async function markContactRead(contactId: string) {
+    if (demoMode) {
+      const nextContacts = contacts.map((contact) => (contact.id === contactId ? { ...contact, status: 'read' as const } : contact))
+      setContacts(nextContacts)
+      writeDemoList('mojuri_demo_contacts', nextContacts)
+      return
+    }
+
+    await api.markContactRead(token, contactId)
+    await loadAll()
   }
 
   return (
@@ -245,7 +457,7 @@ export default function AdminDashboard() {
                       <td>{product.name}</td><td>{product.category}</td><td>${product.salePrice ?? product.price}</td><td>{product.stock}</td><td>{product.status}</td>
                       <td>
                         <button type="button" onClick={() => editProduct(product)}>Edit</button>
-                        <button type="button" onClick={async () => { await api.deleteProduct(token, product.id); await loadAll() }}>Delete</button>
+                        <button type="button" onClick={() => deleteProduct(product.id)}>Delete</button>
                       </td>
                     </tr>
                   ))}
@@ -259,7 +471,7 @@ export default function AdminDashboard() {
                   <tr key={order.id}>
                     <td>{order.id}</td><td>{order.customer.name}</td><td>{order.items.length}</td><td>${order.total}</td>
                     <td>
-                      <select value={order.status} onChange={async (event) => { await api.updateOrderStatus(token, order.id, event.target.value as OrderStatus); await loadAll() }}>
+                      <select value={order.status} onChange={(event) => updateOrderStatus(order.id, event.target.value as OrderStatus)}>
                         {(['pending', 'processing', 'shipped', 'delivered', 'cancelled'] as OrderStatus[]).map((status) => <option key={status}>{status}</option>)}
                       </select>
                     </td>
@@ -274,7 +486,7 @@ export default function AdminDashboard() {
                 {contacts.map((contact) => (
                   <tr key={contact.id}>
                     <td>{contact.name}</td><td>{contact.email}</td><td>{contact.subject}</td><td>{contact.status}</td><td>{contact.message}</td>
-                    <td><button type="button" onClick={async () => { await api.markContactRead(token, contact.id); await loadAll() }}>Mark read</button></td>
+                    <td><button type="button" onClick={() => markContactRead(contact.id)}>Mark read</button></td>
                   </tr>
                 ))}
               </AdminTable>
