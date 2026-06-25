@@ -95,6 +95,12 @@
   text-decoration: none;
 }
 
+.site-auth-actions {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
 .admin-shell {
   min-height: 100vh;
   display: grid;
