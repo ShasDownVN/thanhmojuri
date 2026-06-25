@@ -8,11 +8,11 @@ const pageHtml = `
 <div class="section-container">
 <div class="content-title-heading">
 <h1 class="text-title-heading">
-										Bracelets
+										Shop
 									</h1>
 </div>
 <div class="breadcrumbs">
-<a href="/">Home</a><span class="delimiter"></span><a href="/shop-grid-left">Shop</a><span class="delimiter"></span>Bracelets
+<a href="/">Home</a><span class="delimiter"></span>Shop
 								</div>
 </div>
 </div>

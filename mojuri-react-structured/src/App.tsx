@@ -9,12 +9,11 @@ import Home5 from './pages/Home5'
 import Home6 from './pages/Home6'
 import Home7 from './pages/Home7'
 import Home8 from './pages/Home8'
-import Shop from './pages/Shop'
 import ShopGridLeft from './pages/ShopGridLeft'
 import ShopGridRight from './pages/ShopGridRight'
 import ShopListLeft from './pages/ShopListLeft'
 import ShopListRight from './pages/ShopListRight'
-import Product from './pages/Product'
+import ShopDetails from './pages/ShopDetails'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import Wishlist from './pages/Wishlist'
@@ -71,13 +70,13 @@ export default function App() {
           <Route path="/home-6" element={<Home6 />} />
           <Route path="/home-7" element={<Home7 />} />
           <Route path="/home-8" element={<Home8 />} />
-          <Route path="/shop" element={<Shop />} />
+          <Route path="/shop" element={<ShopGridLeft />} />
           <Route path="/shop-grid-left" element={<ShopGridLeft />} />
           <Route path="/shop-grid-right" element={<ShopGridRight />} />
           <Route path="/shop-list-left" element={<ShopListLeft />} />
           <Route path="/shop-list-right" element={<ShopListRight />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/product/:slug" element={<Product />} />
+          <Route path="/product" element={<ShopDetails />} />
+          <Route path="/product/:slug" element={<ShopDetails />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/wishlist" element={<Wishlist />} />
